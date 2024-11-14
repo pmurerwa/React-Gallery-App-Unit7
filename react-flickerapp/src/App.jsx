@@ -4,6 +4,7 @@ import './App.css'
 import apiKey from './config';
 import Search from './components/Search';
 import Nav from './components/Nav';
+import PhotoList from './components/PhotoList';
 
 function App() {
   const [photos, setPhotos] = useState(0)
@@ -20,11 +21,12 @@ function App() {
         console.error("Error fetching data:", error); 
       });
   }, []);
-  console.log(photos);
+  //console.log(photos);
 
   return (
     <>
-      
+      <Search />
+      <Nav />
     </>
   )
 }
