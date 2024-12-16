@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation} from 'react-router-dom';
-import apiKey from './config';  //Import API key configuration
+import apiKey from './config';  //Import API key 
 
 //App components
-import Search from './components/Search';
-import Nav from './components/Nav';
-import PhotoList from './components/PhotoList';
+import Search from './components/Search'; // Search component that captures user input and triggers a search
+import Nav from './components/Nav'; // Nav component with links to static topics
+import PhotoList from './components/PhotoList'; // that renders all the Photo components.
 
-const App = () => {  // State for storing photos and loading status
-    // State for storing photos and loading status
-  const [photos, setPhotos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const location = useLocation();
+//These states are used to store photos and handle loading indicators.
+const App = () => {  
+  const [photos, setPhotos] = useState([]); //state that Stores the array of photo data fetched from Flickr API.
+  const [loading, setLoading] = useState(false);  //state that Indicates whether data is currently being fetched.
+  const location = useLocation(); 
 
   // Function to fetch data from the Flickr API
   const fetchData = (query) => {
@@ -26,22 +26,25 @@ const App = () => {  // State for storing photos and loading status
         setLoading(false); // Remove loading indicator
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data :", error);
         setLoading(false);
       });
   };
 
 
-  //when the path changes, this will trigger fetchData
+  //The useEffect hook watches for changes in location.pathname (from useLocation).
+  //Whenever the user navigates to a new route, this hook is triggered.
+  //Can use swtich, or map 
   useEffect(() => {
     const path = location.pathname;
+    //Static Routes Matches predefined categories ((/cats, /dogs, /computers)and triggers a call to fetchData with the corresponding tag 
     if (path === '/cats') {
       fetchData('cats');
     } else if (path === '/dogs') {
       fetchData('dogs');
     } else if (path === '/computers') {
       fetchData('computers');
-    } else if (path.startsWith('/search/')) {
+    } else if (path.startsWith('/search/')) { //Identifies routes starting with /search/.
       const query = path.replace('/search/', '');
       fetchData(query);
     }
